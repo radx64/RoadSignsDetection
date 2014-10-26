@@ -24,7 +24,7 @@ def yellowFilter(inputImageInHSV):
 
 def blackFilter(inputImageInHSV):
 	blackFilterDown = np.array([0,0,0]);
-	blackFilterUp = np.array([255,30,30]);
+	blackFilterUp = np.array([255,70,70]);
 	return cv2.inRange(inputImageInHSV,blackFilterDown,blackFilterUp)
 
 imageName = sys.argv[1]
