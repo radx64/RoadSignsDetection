@@ -35,11 +35,6 @@ redFilterImg = redFilter(HSV);
 blueFilterImg = blueFilter(HSV);
 yellowFilterImg = yellowFilter(HSV)
 
-#cv2.imshow('Orginal image', image)
-#cv2.imshow('Red only', redFilterImg)
-#cv2.imshow('Blue only', blueFilterImg)
-#cv2.imshow('Yellow only', yellowFilterImg)
-
 print "Loading image " + imageName + " in grayscale"
 grayscale = cv2.imread(imageName,0)
 
@@ -59,8 +54,6 @@ plt.title('Yellow filtered'), plt.xticks([]), plt.yticks([])
 
 
 plt.show()
-
-#cv2.imshow('Edged image',edgeImg)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
