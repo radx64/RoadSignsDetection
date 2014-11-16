@@ -46,7 +46,7 @@ def main():
 	imageRec = imgProc.getImageForHopfield();
 
 	net.initNeurons(imageRec);
-	net.update(2000);
+	net.update(2500);
 	networkResult = net.getNeuronsMatrix().copy()
 
 	print "================================"
