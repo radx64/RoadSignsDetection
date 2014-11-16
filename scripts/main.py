@@ -6,52 +6,63 @@ import sys
 from hopfield import HopfieldNetwork
 from imgPreprocessor import ImgPreprocessor
 
-trainSet = np.array(
-		[
-			[-1,-1, 1, 1,-1,-1],
-			[ 1, 1,-1,-1, 1, 1]
-		])
+def loadParameters(parametersArray):
+	if(len(parametersArray) < 3):
+		print "Need to give more parameters"
+		sys.exit(1)
+	signs = list()
+	imageToRecognize = ""
+	print "Number of signs to learn: " + str(len(parametersArray)-1)
+	for idx, sign in enumerate(parametersArray):
+		if (idx > 0) and (idx<len(parametersArray)-1):
+			signs.append(sign)
+			print "Image to learn: " + str(sign)
+	print "Image to recognize: " + parametersArray[-1]
+	imageToRecognize = parametersArray[-1]
+	return signs, imageToRecognize
 
 def main():
-	imgProc = ImgPreprocessor(sys.argv[1],12,127)
-	image = imgProc.getImage();
-	imageForHopfield = imgProc.getImageForHopfield()
-	print imageForHopfield
+	SIDE_OF_ARRAY = 12
 
-	net = HopfieldNetwork(imageForHopfield.shape[0])
-	net.initWeights(imageForHopfield.shape[0])
-	net.trainHebb(imageForHopfield)
-	net.initNeurons(np.ones(imageForHopfield.shape[0]))
+	net = HopfieldNetwork(SIDE_OF_ARRAY*SIDE_OF_ARRAY)
 
-	net.update(20)
-	remeberedImage20 = net.getNeuronsMatrix().copy()
-	remeberedImage20 = np.reshape(remeberedImage20, (image.shape[0],image.shape[0]))
-	net.update(80)
-	remeberedImage100 = net.getNeuronsMatrix().copy()
-	remeberedImage100 = np.reshape(remeberedImage100, (image.shape[0],image.shape[0]))
-	net.update(150)
-	remeberedImage250 = net.getNeuronsMatrix().copy()
-	remeberedImage250 = np.reshape(remeberedImage250, (image.shape[0],image.shape[0]))
-	net.update(250)
-	remeberedImage500 = net.getNeuronsMatrix().copy()
-	remeberedImage500 = np.reshape(remeberedImage500, (image.shape[0],image.shape[0]))
-	net.update(500)
-	remeberedImage1000 = net.getNeuronsMatrix().copy()
-	remeberedImage1000 = np.reshape(remeberedImage1000, (image.shape[0],image.shape[0]))
+	signsList, imgToRecogn = loadParameters(sys.argv)
+	images = list()
+	for image in signsList:
+		imgProc = ImgPreprocessor(image,SIDE_OF_ARRAY,127)
+		image = imgProc.getImageForHopfield().copy();
+		print image
+		images.append(image)
+		net.trainHebb(image)
 
-	plt.subplot(241),plt.imshow(image,cmap = 'gray', interpolation = 'nearest')
-	plt.title('Orginal image'), plt.xticks([]), plt.yticks([])	
+	imgProc2 = ImgPreprocessor(imgToRecogn,SIDE_OF_ARRAY,127)
+	imageRec2 = imgProc2.getImageForHopfield();
 
-	plt.subplot(242),plt.imshow(remeberedImage20,cmap = 'gray', interpolation = 'nearest')
-	plt.title('Image after 20 iterations'), plt.xticks([]), plt.yticks([])
-	plt.subplot(243),plt.imshow(remeberedImage100,cmap = 'gray', interpolation = 'nearest')
-	plt.title('Image after 100 iterations'), plt.xticks([]), plt.yticks([])
-	plt.subplot(244),plt.imshow(remeberedImage250,cmap = 'gray', interpolation = 'nearest')
-	plt.title('Image after 250 iterations'), plt.xticks([]), plt.yticks([])
-	plt.subplot(245),plt.imshow(remeberedImage500,cmap = 'gray', interpolation = 'nearest')
-	plt.title('Image after 500 iterations'), plt.xticks([]), plt.yticks([])
-	plt.subplot(246),plt.imshow(remeberedImage500,cmap = 'gray', interpolation = 'nearest')
-	plt.title('Image after 1000 iterations'), plt.xticks([]), plt.yticks([])
+	net.initNeurons(imageRec2);
+	net.update(2000);
+
+	subplotIndex = 201
+	subplotIndex += 10 * len(images)
+	
+	for idx, image in enumerate(images):
+		plt.subplot(subplotIndex+idx)
+		image2d = np.reshape(image, (SIDE_OF_ARRAY,SIDE_OF_ARRAY))
+		plt.imshow(image2d, cmap='gray', interpolation = 'nearest')
+		plt.xticks([]), plt.yticks([]), plt.title("Sample %d" % idx)
+
+	newLineSubplotIndex = subplotIndex + len(images)
+	plt.subplot(newLineSubplotIndex)
+	image2d = np.reshape(imageRec2, (SIDE_OF_ARRAY,SIDE_OF_ARRAY))
+	plt.imshow(image2d, cmap='gray', interpolation = 'nearest')
+	plt.xticks([]), plt.yticks([]), plt.title("To recognize")
+
+	plt.subplot(newLineSubplotIndex+1)
+	networkResult = net.getNeuronsMatrix().copy()
+
+	image2dResult = np.reshape(networkResult, (SIDE_OF_ARRAY,SIDE_OF_ARRAY))
+	print image2dResult
+	plt.imshow(image2dResult, cmap='gray', interpolation = 'nearest')
+	plt.xticks([]), plt.yticks([]), plt.title("Returned by net")
 	plt.show()
 
 if __name__ == '__main__':
