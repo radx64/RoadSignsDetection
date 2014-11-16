@@ -2,20 +2,11 @@
 import numpy as np
 import random
 
-trainSet = np.array(
-		[
-			[-1,-1, 1, 1,-1,-1],
-			[ 1, 1,-1,-1, 1, 1]
-		])
-
-print "Prepared trainSet shape: " + str(trainSet.shape)
-
 class HopfieldNetwork:
 	"""A simple implementation of Hopfield Network"""
 
-	def __init__(self, neuronsCount, learningRate):
+	def __init__(self, neuronsCount):
 		self.neuronsCount = neuronsCount
-		self.learningRate = learningRate
 		self.weightsMatrix = np.array([])
 		self.outputMatrix = np.array([])
 
@@ -44,27 +35,10 @@ class HopfieldNetwork:
 				self.outputMatrix[neuron] = 1 if activation > 0 else -1
 			#print self.outputMatrix
 
-	def train(self, trainingMatrix):
-		print "Training net"
+	def trainHebb(self, trainingMatrix, learningRate=0.01):
+		print "WeightsMatrix after training"
 		for i in range(self.neuronsCount):
 			for j in range(self.neuronsCount):
 				if i != j:
-					self.weightsMatrix[i][j] += self.learningRate * trainingMatrix[i] * trainingMatrix[j]
+					self.weightsMatrix[i][j] += learningRate * trainingMatrix[i] * trainingMatrix[j]
 		print self.weightsMatrix
-
-def main():
-	net = HopfieldNetwork(4,0.3)
-	net.initWeights(6)
-	net.train(trainSet[0])
-	net.train(trainSet[1])
-	net.initNeurons([1, 1, 1, 1,-1,-1])
-	net.update(10)
-	print "Results after 10 updates:"
-	print net.getNeuronsMatrix()
-	net.initNeurons([1, 1, 1,-1, 1, 1])
-	net.update(10)
-	print "Results after 10 updates:"
-	print net.getNeuronsMatrix()
-
-if __name__ == '__main__':
-	main()
