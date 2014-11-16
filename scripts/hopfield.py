@@ -34,9 +34,9 @@ class HopfieldNetwork:
 				#print "Activation value:" + str(activation)
 				self.outputMatrix[neuron] = 1 if activation > 0 else -1
 				#print "Before: " + str(beforeValue) + " After: "+ str(self.outputMatrix[neuron]) 
-				afterValue = self.outputMatrix[neuron]
-				if beforeValue != afterValue:
-					print "Neuron " + str(neuron) + " has changed"
+			afterValue = self.outputMatrix[neuron]
+			if beforeValue != afterValue:
+				print "Neuron " + str(neuron) + " has changed"
 			#print self.outputMatrix
 
 	def trainHebb(self, trainingMatrix, learningRate=0.001):

@@ -35,10 +35,10 @@ def main():
 		images.append(image)
 		net.trainHebb(image)
 
-	imgProc2 = ImgPreprocessor(imgToRecogn,SIDE_OF_ARRAY,127)
-	imageRec2 = imgProc2.getImageForHopfield();
+	imgProc = ImgPreprocessor(imgToRecogn,SIDE_OF_ARRAY,127)
+	imageRec = imgProc.getImageForHopfield();
 
-	net.initNeurons(imageRec2);
+	net.initNeurons(imageRec);
 	net.update(2000);
 
 	subplotIndex = 201
@@ -52,7 +52,7 @@ def main():
 
 	newLineSubplotIndex = subplotIndex + len(images)
 	plt.subplot(newLineSubplotIndex)
-	image2d = np.reshape(imageRec2, (SIDE_OF_ARRAY,SIDE_OF_ARRAY))
+	image2d = np.reshape(imageRec, (SIDE_OF_ARRAY,SIDE_OF_ARRAY))
 	plt.imshow(image2d, cmap='gray', interpolation = 'nearest')
 	plt.xticks([]), plt.yticks([]), plt.title("To recognize")
 
