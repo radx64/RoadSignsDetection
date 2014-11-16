@@ -21,6 +21,13 @@ def loadParameters(parametersArray):
 	imageToRecognize = parametersArray[-1]
 	return signs, imageToRecognize
 
+def invertMatrix(matrix):
+	invMatrix = matrix.copy()
+	invMatrix[invMatrix == -1] = 0
+	invMatrix[invMatrix ==  1] = -1
+	invMatrix[invMatrix ==  0] = 1
+	return invMatrix
+
 def main():
 	SIDE_OF_ARRAY = 12
 
@@ -40,6 +47,22 @@ def main():
 
 	net.initNeurons(imageRec);
 	net.update(2000);
+	networkResult = net.getNeuronsMatrix().copy()
+
+	print "================================"
+	matchFound = False
+	for idx, image in enumerate(images):
+		if np.array_equiv(networkResult,image):
+			print "Found matching image as sample " + str(idx)
+			matchFound = True
+			break
+		elif np.array_equiv(invertMatrix(networkResult),image):
+			print "Found inverse matching image as sample" + str(idx)
+			matchFound = True
+			break
+	if(not matchFound):
+		print "Unfortunately no match!"
+	print "================================"
 
 	subplotIndex = 201
 	subplotIndex += 10 * len(images)
@@ -57,10 +80,7 @@ def main():
 	plt.xticks([]), plt.yticks([]), plt.title("To recognize")
 
 	plt.subplot(newLineSubplotIndex+1)
-	networkResult = net.getNeuronsMatrix().copy()
-
 	image2dResult = np.reshape(networkResult, (SIDE_OF_ARRAY,SIDE_OF_ARRAY))
-	print image2dResult
 	plt.imshow(image2dResult, cmap='gray', interpolation = 'nearest')
 	plt.xticks([]), plt.yticks([]), plt.title("Returned by net")
 	plt.show()
