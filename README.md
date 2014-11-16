@@ -3,15 +3,22 @@ RoadSignsDetection
 
 Road Signs Detection System
 
-Rozpoznawanie obrazów znaków drogowych przy użyciu dyskretnej sieci Hopfielda
+Road signs recognition based on Hopfield discreet neural network. 
 
-[Todo]
+###Todo
+1. Milestone 1
+	* Network research
+		- Internal net structure
+		- Working principles
+		- Training models
+	* Choose enviroment
+	* Prepare sets of traffic signs in common format
+	* Simple pre-processing of images
+	
 
-	1. Informacje o dyskretnej sieci Hopfielda
-		struktura wewnętrzna		
-		zasada działania
-		sposób uczenia
-
-	2. Wybranie środowiska
-	3. Przygotowanie zestawów znaków drogowych
-	4. Wstępny pre-processing obrazów
+2. Milestone 2
+ 	* Scaling down and tresholding images
+ 	* Implementation of Hopfield network
+ 		- Hebbian learning method
+ 		- Inverse propagation method
+ 	* Training Hopfield network with few samples
