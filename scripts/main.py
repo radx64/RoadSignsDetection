@@ -39,6 +39,8 @@ class HopfieldApp(npyscreen.NPSApp):
 		netHebb      = HopfieldNetwork(SIDE_OF_ARRAY*SIDE_OF_ARRAY)
 		netPseudoInv = HopfieldNetwork(SIDE_OF_ARRAY*SIDE_OF_ARRAY)
 		netDelta     = HopfieldNetwork(SIDE_OF_ARRAY*SIDE_OF_ARRAY)
+		F.add(npyscreen.TitleFixedText, name = "Network instances initialized",)
+		F.display()
 
 		signsList, imgToRecogn = self.loadParameters(sys.argv)
 		F.add(npyscreen.TitleFixedText, name = "Image to recognize: " + imgToRecogn,)
@@ -49,12 +51,14 @@ class HopfieldApp(npyscreen.NPSApp):
 			image = imgProc.getImageForHopfield().copy()
 			#print image
 			F.add(npyscreen.TitleFixedText, name = "Image to learn: " + imageName,)
+			F.display()
 			images.append(image)
 			netHebb.trainHebb(image)
 			netDelta.trainDelta(image)
 			netPseudoInv.appendTrainingVectorForPseudoInversion(image)
 
 		netPseudoInv.trainPseudoInversion()
+		F.add(npyscreen.TitleFixedText, name = "Networks teached by above images",)
 		F.display()
 		imgProc  = ImgPreprocessor(imgToRecogn,SIDE_OF_ARRAY,127)
 		imageRec = imgProc.getImageForHopfield()
@@ -63,9 +67,11 @@ class HopfieldApp(npyscreen.NPSApp):
 		netDelta.initNeurons(imageRec)
 		netPseudoInv.initNeurons(imageRec)
 
-		hebbProgressWidget = F.add(npyscreen.TitleSlider, out_of=100, name  = "Hebb Updates     ")
-		deltaProgressWidget = F.add(npyscreen.TitleSlider, out_of=100, name = "Delta Updates    ")
-		pInvProgressWidget = F.add(npyscreen.TitleSlider, out_of=100, name  = "PseudoInv Updates")
+		hebbProgressWidget = F.add(npyscreen.TitleSlider, out_of=100, name  = "Hebb")
+		F.add(npyscreen.TitleFixedText, name = " ",)
+		deltaProgressWidget = F.add(npyscreen.TitleSlider, out_of=100, name = "Delta")
+		F.add(npyscreen.TitleFixedText, name = " ",)
+		pInvProgressWidget = F.add(npyscreen.TitleSlider, out_of=100, name  = "PInv")
 
 		for i in range(50):
 			netHebb.update(100)
@@ -86,7 +92,7 @@ class HopfieldApp(npyscreen.NPSApp):
 		networkResultDelta     = netDelta.getNeuronsMatrix().copy()
 		networkResultPseudoInv = netPseudoInv.getNeuronsMatrix().copy()
 
-		netHebb.saveNetworkConfigToFile('networkConfig.txt');
+		#netHebb.saveNetworkConfigToFile('networkConfig.txt');
 		"""
 		#print "================================"
 		matchFound = False
