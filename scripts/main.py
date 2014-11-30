@@ -29,7 +29,7 @@ def invertMatrix(matrix):
 	return invMatrix
 
 def main():
-	SIDE_OF_ARRAY = 12
+	SIDE_OF_ARRAY = 25
 
 	net = HopfieldNetwork(SIDE_OF_ARRAY*SIDE_OF_ARRAY)
 
@@ -40,15 +40,18 @@ def main():
 		image = imgProc.getImageForHopfield().copy();
 		print image
 		images.append(image)
-		net.trainHebb(image)
+		#net.trainHebb(image)
+		net.appendTrainingVectorForPseudoInversion(image)
+
+	net.trainPseudoInversion();
 
 	imgProc = ImgPreprocessor(imgToRecogn,SIDE_OF_ARRAY,127)
 	imageRec = imgProc.getImageForHopfield();
 
 	net.initNeurons(imageRec);
-	net.update(2500);
+	net.update(5000);
 	networkResult = net.getNeuronsMatrix().copy()
-
+	
 	print "================================"
 	matchFound = False
 	for idx, image in enumerate(images):
@@ -84,6 +87,7 @@ def main():
 	plt.imshow(image2dResult, cmap='gray', interpolation = 'nearest')
 	plt.xticks([]), plt.yticks([]), plt.title("Returned by net")
 	plt.show()
+	
 
 if __name__ == '__main__':
 	main()

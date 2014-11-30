@@ -8,6 +8,7 @@ class HopfieldNetwork:
 		self.neuronsCount = neuronsCount
 		self.weightsMatrix = np.array([])
 		self.outputMatrix = np.array([])
+		self.learnMatrix = np.array([])	#for pseudoInversion learing method
 		self.initWeights()
 
 	def getNeuronsMatrix(self):
@@ -36,7 +37,8 @@ class HopfieldNetwork:
 				#print "Before: " + str(beforeValue) + " After: "+ str(self.outputMatrix[neuron]) 
 			afterValue = self.outputMatrix[neuron]
 			if beforeValue != afterValue:
-				print "Neuron " + str(neuron) + " has changed"
+				pass
+				#print "Neuron " + str(neuron) + " has changed"
 			#print self.outputMatrix
 
 	def trainHebb(self, trainingMatrix, learningRate=0.001):
@@ -47,6 +49,14 @@ class HopfieldNetwork:
 					self.weightsMatrix[i][j] += learningRate * trainingMatrix[i] * trainingMatrix[j]
 		print self.weightsMatrix
 
-	def trainPseudoinversion(self):
-		print "Not implemented yet! Network state was left unaffected"
+	def appendTrainingVectorForPseudoInversion(self, trainingVector):
+		if len(self.learnMatrix) == 0:
+			self.learnMatrix = trainingVector
+		else:
+			self.learnMatrix = np.vstack([self.learnMatrix, trainingVector])
+		pass
+
+	def trainPseudoInversion(self):
+		X = self.learnMatrix
+		self.weightsMatrix = np.dot(np.linalg.pinv(X),X)
 		pass
