@@ -61,7 +61,7 @@ class HopfieldNetwork:
 		lastRoundUpdates = -1
 		while(lastRoundUpdates != 0):
 			lastRoundUpdates = self.update(self.neuronsCount*10);
-			print "Last updated " + str(lastRoundUpdates) + " neurons"
+			#print "Last updated " + str(lastRoundUpdates) + " neurons"
 
 
 	def trainHebb(self, trainingVector, learningRate=0.01):
