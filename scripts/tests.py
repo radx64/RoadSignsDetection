@@ -12,9 +12,7 @@ from imageLines import ImageLines
 import cv2
 import cv
 
-SIDE_OF_ARRAY = 8
-
-NOISE_FACTOR = 0.05
+SIDE_OF_ARRAY = 32
 
 HEBB_PREFIX = 'hebb_'
 DELTA_PREFIX = 'delta_'
