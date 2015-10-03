@@ -28,6 +28,6 @@ Road signs recognition based on Hopfield discreet neural network.
 		- [x] Delta method
  
 4. Milestone IV
- 	* [ ] Teach network of every choosen road sign
- 	* [ ] Write some noise generator for pattern recovery
-	* [ ] Make some test on network using all teaching methods 	
+ 	* [x] Teach network of every choosen road sign
+ 	* [x] Write some noise generator for pattern recovery
+	* [x] Make some test on network using all teaching methods 	
